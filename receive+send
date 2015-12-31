@@ -1,0 +1,101 @@
+var http = require('http');   //Lets require/import the HTTP module
+var fs = require("fs");
+
+const PORT=8080; //port to listen 
+
+setInterval(sendPeriodic,10000);	//periodically send the data to the server
+
+//We need a function which handles requests and send response
+function handleRequest(request, response){
+    var str=""+request.url;
+    str=str.substr(1,str.length);
+  var data=getData(str);
+  writeFile(data);
+  response.end('Data Received');
+}
+//Create a server
+var server = http.createServer(handleRequest);
+//start our server
+server.listen(PORT, function(){
+    //Callback triggered when server is successfully listening. Hurray!
+    console.log("Server listening on: http://localhost:%s", PORT);
+});
+
+function getData(st)
+{                           //data format:"uni1-val,uni2-val,uni3-val,....."
+    var flag=0;             // test url : http://localhost:8080/lol-cyf34,pop-231,llo-0090,
+    var x=0,len=st.length;
+    var data=[];
+    for (var i = 0; i < len; i++) {
+        if (st[i]==='-')
+        {
+          //  console.log(st.substr(flag,i-flag));
+            data[x]=st.substr(flag,i-flag); 
+            x++;
+            i++;
+            flag=i;
+            while(st[i]!==',' || i>=st.length)
+            {
+                    i++;
+            }
+         //   console.log(st.substr(flag,i-flag));
+            data[x]=st.substr(flag,i-flag);
+            x++;
+            i++;
+            flag=i;
+            continue;
+        }        
+   };
+   return data;   
+}
+
+function writeFile(data){           //write content to the file in JSON format
+    var str='{';
+    var len=data.length;
+    for (var i = 0; i < len; i++) {
+        str=str+'\"'+data[i]+'\":\"'+data[++i]+'\"';
+        str=str+',';
+    };
+    str=str.substr(0,str.length-1);
+    str=str+'}\t';
+    fs.appendFile('input.txt', str , function (err) {
+if (err) {
+return console.error(err);
+}
+console.log(str+' written successfully')
+});
+return;
+}
+
+function sendPeriodic() {
+fs.readFile( "input.txt", 'utf8', function (err, data) {
+var len=data.length;
+var index=0;
+var datafil=[];
+for (var i = 0; i < len; i++) {
+	if (data[i]=='{')
+	{
+		flag=i;
+		while(data[i]!='}')
+		{
+			i++;
+		}
+		var datajson=JSON.parse(data.substr(flag,i-flag+1));
+		datafil[""+index] = datajson;
+		index++;
+	}
+};
+console.log(datafil);
+clearFile();
+});
+}
+
+function clearFile()
+{
+fs.open('input.txt', 'w+', function(err, fd) {
+if (err) {
+return console.error(err);
+}
+console.log("Transmission module run successful!");
+});
+}
