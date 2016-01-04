@@ -30,7 +30,7 @@
         xmlhttp.send();
     }
 
-    callAjax('https://api.carriots.com/projects/', callbackAjax);
+    callAjax('http://api.carriots.com/devices/arduinotest@rishisharma920.rishisharma920/streams/?order=-1&max=500', callbackAjax);
 </script>
 
 </html>
