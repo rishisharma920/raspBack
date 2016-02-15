@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<body>
+<div style="width:400px; margin-left: 100px">
+<canvas id="canvas">Your browser does not support the HTML5 canvas tag.</canvas>
+</div>
+<script>
+window.onload=function(){
+var canvas = document.getElementById("canvas");
+var ctx = canvas.getContext("2d");
+
+var W=canvas.width;
+var H=canvas.height;
+var radians= 200*Math.PI/180;
+var degrees=200;
+var color="lightgreen";
+var bgcolor="#223";
+
+
+var hh=canvas.height;
+var ww=canvas.width;
+var l=100;
+var h=.8*hh;
+var w=.6*ww;
+var arcA=120*Math.PI/180;
+
+function init()
+{
+    
+ctx.clearRect(0,0,W,H);
+ctx.closePath();
+//360 degree background 
+ctx.beginPath();
+ctx.fillStyle = "lightgreen";
+ctx.fillRect(.2*ww, hh-l-.2*hh,.6*ww,l);
+
+
+
+ctx.beginPath();
+//ctx.arc(0, l/2-w/2, 100, -250*Math.PI/180, -315/180* Math.PI+Math.PI,true);
+ctx.fillStyle = "green";
+ctx.arc(ww/2,hh- .2*hh - w/2/Math.tan(arcA/2), w/2/Math.sin(arcA/2), 90*Math.PI/180-arcA/2,90*Math.PI/180+arcA/2,false);
+
+ctx.fill();
+ctx.closePath();
+
+
+//the dial path
+ctx.beginPath();
+ctx.strokeStyle=color;
+ctx.lineWidth=30;
+ctx.arc(W/2,H/2,50,0-90*Math.PI/180, (degrees-90)*Math.PI/180, false);
+ctx.stroke();
+}
+
+
+function draw()
+{
+    new_degrees= Math.round(Math.random()*360);
+    var difference=new_degrees-degrees;
+    animation_loop=setInterval(animate_to,2000/difference);
+        
+ 
+    
+}
+
+draw();
+
+setInterval(draw,2000);
+
+function animate_to(){    // for smooth stansition
+ if (degrees<new_degrees)
+ {
+     degrees++
+ }
+ else
+ {
+     degrees--;
+ }
+ 
+ if (degrees==new_degrees)
+ {
+        
+    clearInterval(animation_loop);    // to avoid floickering at the end
+ }
+ 
+        init();
+}
+
+}
+
+</script>
+
+<style>
+#canvas{
+ display: block;
+ background-color:black;
+width:100%;
+margin: auto auto;
+   
+}
+</style>
+
+</body>
+</html>
