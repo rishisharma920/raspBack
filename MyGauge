@@ -13,7 +13,7 @@ var W=canvas.width;
 var H=canvas.height;
 var radians= 200*Math.PI/180;
 var degrees=200;
-var color="lightgreen";
+var color="lightblue";
 var bgcolor="#223";
 
 
@@ -33,14 +33,14 @@ ctx.closePath();
 
 //360 degree background 
 ctx.beginPath();
-ctx.fillStyle = "lightgreen";
+ctx.fillStyle = color;
 ctx.fillRect(.2*ww, hh-l-.2*hh,.6*ww,l);
 
 
 
 ctx.beginPath();
 //ctx.arc(0, l/2-w/2, 100, -250*Math.PI/180, -315/180* Math.PI+Math.PI,true);
-ctx.fillStyle = "lightgreen";
+ctx.fillStyle = color;
 ctx.arc(ww/2,hh- .2*hh - w/2/Math.tan(arcA/2), w/2/Math.sin(arcA/2), 90*Math.PI/180-arcA/2,90*Math.PI/180+arcA/2,false);
 ctx.fill();
 ctx.closePath();
@@ -60,7 +60,7 @@ function draw()
 {
     new_l= Math.round(Math.random()*100);
     var difference=new_l-l;
-    animation_loop=setInterval(animate_to,2000/difference);
+    animation_loop=setInterval(animate_to,1000/difference);
         
  
     
@@ -68,7 +68,7 @@ function draw()
 
 draw();
 
-setInterval(draw,2000);
+setInterval(draw,1000);
 
 function animate_to(){    // for smooth stansition
  if (l<new_l)
