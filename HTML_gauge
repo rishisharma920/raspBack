@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<canvas id="canvas">Your browser does not support the HTML5 canvas tag.</canvas>
+
+<script>
+window.onload=function(){
+var canvas = document.getElementById("canvas");
+var ctx = canvas.getContext("2d");
+
+var W=canvas.width;
+var H=canvas.height;
+var radians= 200*Math.PI/180;
+var degrees=200;
+var color="lightgreen";
+var bgcolor="#223";
+
+
+
+function init()
+{
+    
+    ctx.clearRect(0,0,W,H);
+
+//360 degree background 
+ctx.beginPath();
+ctx.strokeStyle=bgcolor;
+ctx.lineWidth=30;
+ctx.arc(W/2,H/2,50,0, 2*Math.PI, true);
+ctx.stroke();
+
+
+//the dial path
+ctx.beginPath();
+ctx.strokeStyle=color;
+ctx.lineWidth=30;
+ctx.arc(W/2,H/2,50,0-90*Math.PI/180, (degrees-90)*Math.PI/180, false);
+ctx.stroke();
+}
+
+
+function draw()
+{
+    new_degrees= Math.round(Math.random()*360);
+    var difference=new_degrees-degrees;
+    animation_loop=setInterval(animate_to,1000/difference);
+        
+
+    
+}
+
+draw();
+
+setInterval(draw,1000);
+
+function animate_to(){    // for smooth stansition
+ if (degrees<new_degrees)
+ {
+     degrees++
+ }
+ else
+ {
+     degrees--;
+ }
+ 
+ if (degrees==new_degrees)
+ {
+        
+    clearInterval(animation_loop);    // to avoid floickering at the end
+ }
+ 
+        init();
+}
+
+}
+
+</script>
+
+<style>
+#canvas{
+ display: block;
+width: 300px;
+margin: 100px auto;
+   
+}
+</style>
+
+</body>
+</html>
