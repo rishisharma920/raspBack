@@ -1,24 +1,24 @@
 <!DOCTYPE html>
 <html>
 <body>
-<div style="width:400px; margin-left: 100px">
+<div width="400px" style="margin-left: auto auto; display:block">
 <canvas id="canvas">Your browser does not support the HTML5 canvas tag.</canvas>
+
+<img id="source" src="tank2.png" width="0" height="0">
 </div>
 <script>
 window.onload=function(){
 var canvas = document.getElementById("canvas");
 var ctx = canvas.getContext("2d");
 
-var W=canvas.width;
-var H=canvas.height;
-var radians= 200*Math.PI/180;
-var degrees=200;
+
+
 var color="lightblue";
 var bgcolor="#223";
 
 
 var hh=canvas.height;
-var ww=canvas.width;
+var ww=canvas.width*.6;
 var l=100;
 var h=.8*hh;
 var w=.6*ww;
@@ -28,8 +28,15 @@ var arcATop=20*Math.PI/180;
 function init()
 {
     
-ctx.clearRect(0,0,W,H);
+ctx.clearRect(0,0,ww,hh);
 ctx.closePath();
+
+
+//image for background
+var image = document.getElementById("source");
+
+ctx.drawImage(image, .05*ww, .1*hh, .9*ww, .9*hh);
+
 
 //360 degree background 
 ctx.beginPath();
@@ -48,17 +55,27 @@ ctx.closePath();
 
 //for the tip arc
 ctx.beginPath();
-ctx.fillStyle = "white";
+ctx.fillStyle = "#c2c2c2";
 ctx.arc(ww/2,hh- .2*hh - w/2/Math.tan(arcATop/2)-l, w/2/Math.sin(arcATop/2), 90*Math.PI/180-arcATop/2,90*Math.PI/180+arcATop/2,false);
 ctx.fill();
 ctx.closePath();
+
+ctx.fillStyle = "lightyellow";
+		ctx.font = "15px bebas";
+		text = Math.floor(l/90*100) + "%";
+		//Lets center the text
+		//deducting half of text width from position x
+		text_width = ctx.measureText(text).width;
+		//adding manual value to position y since the height of the text cannot
+		//be measured easily. There are hacks but we will keep it manual for now.
+		ctx.fillText(text, ww/2 - text_width/2+w*.35, hh/2 - h*.45 + 15);
 
 }
 
 
 function draw()
 {
-    new_l= Math.round(Math.random()*100);
+    new_l= Math.round(Math.random()*90);
     var difference=new_l-l;
     animation_loop=setInterval(animate_to,1000/difference);
         
@@ -80,7 +97,7 @@ function animate_to(){    // for smooth stansition
      l--;
  }
  
- if (l==new_l)
+ if (l==new_l || l==new_l+1 || l==new_l-1)
  {
         
     clearInterval(animation_loop);    // to avoid floickering at the end
@@ -97,7 +114,6 @@ function animate_to(){    // for smooth stansition
 #canvas{
  display: block;
  background-color:white;
-width:100%;
 margin: auto auto;
    
 }
